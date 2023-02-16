@@ -14,6 +14,10 @@ from multiprocessing.pool import ThreadPool
 from typing import Callable, Union
 import pandas as pd
 from meteostat.core.warn import warn
+import io
+import requests
+
+
 
 
 def processing_handler(
@@ -79,8 +83,9 @@ def load_handler(
     try:
 
         # Read CSV file from Meteostat endpoint
+        s = requests.get(endpoint + path, verify=False).content
         df = pd.read_csv(
-            endpoint + path,
+            io.StringIO(s.decode('utf-8')),
             compression="gzip",
             names=columns,
             dtype=types,
