@@ -16,6 +16,7 @@ import pandas as pd
 from meteostat.core.warn import warn
 import io
 import requests
+import gzip
 
 
 
@@ -84,8 +85,9 @@ def load_handler(
 
         # Read CSV file from Meteostat endpoint
         s = requests.get(endpoint + path, verify=False).content
+        data = gzip.decompress(s)
         df = pd.read_csv(
-            io.StringIO(s.decode('utf-8')),
+            data,
             compression="gzip",
             names=columns,
             dtype=types,
