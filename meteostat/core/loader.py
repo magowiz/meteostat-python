@@ -17,6 +17,7 @@ from meteostat.core.warn import warn
 import io
 import requests
 import gzip
+from io import StringIO
 
 
 
