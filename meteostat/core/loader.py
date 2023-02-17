@@ -88,7 +88,6 @@ def load_handler(
         data = gzip.decompress(s)
         df = pd.read_csv(
             data,
-            compression="gzip",
             names=columns,
             dtype=types,
             parse_dates=parse_dates,
