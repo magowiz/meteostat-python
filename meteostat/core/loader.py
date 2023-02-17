@@ -86,7 +86,7 @@ def load_handler(
 
         # Read CSV file from Meteostat endpoint
         s = requests.get(endpoint + path, verify=False).content
-        file = StringIO(s)
+        file = StringIO(s.read().decode('utf-8'))
         df = pd.read_csv(
             file,
             names=columns,
