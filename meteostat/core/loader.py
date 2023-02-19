@@ -21,6 +21,7 @@ from io import StringIO
 from kivy.logger import Logger
 import shutil
 import os
+import errno
 
 
 
@@ -98,8 +99,9 @@ def load_handler(
                 fh.read(1)
             except gzip.BadGzipFile:
                 print('input_file is not a valid gzip file by BadGzipFile')
-                os.remove(file_out)
                 gzipped = False
+                raise FileNotFoundError(
+                    errno.ENOENT, os.strerror(errno.ENOENT), path)
         if gzipped:
             with gzip.open(io.BytesIO(x), 'rb') as f_in:
                 with open(file_out, 'wb') as f_out:
