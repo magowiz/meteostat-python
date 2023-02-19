@@ -85,26 +85,22 @@ def load_handler(
     """
 
     try:
-
         # Read CSV file from Meteostat endpoint
         # endpoint = endpoint.replace('https', 'http')
         # Logger.info(f'meteostat endpoint {endpoint}')
         url = endpoint + path
         x = requests.get(url=url, verify=None).content
         gzipped = True
-        with gzip.open(io.BytesIO(x), 'rb') as fh:
-        try:
-            fh.read(1)
-        except gzip.BadGzipFile:
-            print('input_file is not a valid gzip file by BadGzipFile')
-            gzipped = False
         file_out = 'file.txt'
+        with gzip.open(io.BytesIO(x), 'rb') as fh:
+            try:
+                fh.read(1)
+            except gzip.BadGzipFile:
+                print('input_file is not a valid gzip file by BadGzipFile')
+                os.remove(file_out)
+                gzipped = False
         if gzipped:
             with gzip.open(io.BytesIO(x), 'rb') as f_in:
-                with open(file_out, 'wb') as f_out:
-                    shutil.copyfileobj(f_in, f_out)
-        else:
-            with open(io.BytesIO(x), 'rb') as f_in:
                 with open(file_out, 'wb') as f_out:
                     shutil.copyfileobj(f_in, f_out)
         df = pd.read_csv(
