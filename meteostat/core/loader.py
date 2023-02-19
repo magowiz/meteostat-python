@@ -95,7 +95,6 @@ def load_handler(
         with gzip.open(io.BytesIO(x), 'rb') as f_in:
             with open(file_out, 'wb') as f_out:
                 shutil.copyfileobj(f_in, f_out)
-        gzip_bytes = io.StringIO(x.decode('utf8'))
         
         df = pd.read_csv(
             file_out,
