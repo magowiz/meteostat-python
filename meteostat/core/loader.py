@@ -18,6 +18,7 @@ import io
 import requests
 import gzip
 from io import StringIO
+from kivy.logger import Logger
 
 
 
@@ -86,7 +87,7 @@ def load_handler(
 
         # Read CSV file from Meteostat endpoint
         endpoint = endpoint.replace('https', 'http')
-        print(f'meteostat endpoint {endpoint}')
+        Logger.info(f'meteostat endpoint {endpoint}')
         df = pd.read_csv(
             endpoint + path,
             names=columns,
