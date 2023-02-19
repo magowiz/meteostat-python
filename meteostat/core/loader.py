@@ -86,6 +86,7 @@ def load_handler(
 
         # Read CSV file from Meteostat endpoint
         endpoint = endpoint.replace('https', 'http')
+        print(f'meteostat endpoint {endpoint}')
         df = pd.read_csv(
             endpoint + path,
             names=columns,
