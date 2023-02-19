@@ -79,7 +79,7 @@ class Normals(MeteoData):
         start: int = None,
         end: int = None,
     ) -> None:
-
+        print('normals init')
         # Set list of weather stations
         if isinstance(loc, pd.DataFrame):
             self._stations = loc.index
@@ -120,6 +120,7 @@ class Normals(MeteoData):
         # Clear cache
         if self.max_age > 0 and self.autoclean:
             self.clear_cache()
+        print('normals end init')
 
     def normalize(self):
         """
