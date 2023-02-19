@@ -89,9 +89,15 @@ def load_handler(
         # endpoint = endpoint.replace('https', 'http')
         # Logger.info(f'meteostat endpoint {endpoint}')
         url = endpoint + path
-        x = requests.get(url=url, verify=None).content 
+        x = requests.get(url=url, verify=None).content
+        file_out = 'file.txt'
+        with gzip.open(io.BytesIO(x), 'rb') as f_in:
+            with open(file_out, 'wb') as f_out:
+                shutil.copyfileobj(f_in, f_out)
+        gzip_bytes = io.StringIO(x.decode('utf8'))
+        
         df = pd.read_csv(
-            io.StringIO(x.decode('utf8')),
+            file_out,
             names=columns,
             dtype=types,
             parse_dates=parse_dates,
