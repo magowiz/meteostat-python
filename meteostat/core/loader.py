@@ -100,8 +100,12 @@ def load_handler(
             except gzip.BadGzipFile:
                 print('input_file is not a valid gzip file by BadGzipFile')
                 gzipped = False
-                raise FileNotFoundError(
-                    errno.ENOENT, os.strerror(errno.ENOENT), path)
+                # Create empty DataFrane
+                df = pd.DataFrame(columns=[*types])
+
+                # Display warning
+                warn(f"Cannot load {path} from {endpoint}")
+                return df
         if gzipped:
             with gzip.open(io.BytesIO(x), 'rb') as f_in:
                 with open(file_out, 'wb') as f_out:
