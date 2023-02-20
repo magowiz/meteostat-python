@@ -93,11 +93,11 @@ def load_handler(
         url = endpoint + path
         x = requests.get(url=url, verify=None).content
         gzipped = True
-        file_out = 'file.txt'
-        with gzip.open(io.BytesIO(x), 'rb') as fh:
-            try:
+        file_out = 'file.txt'       
+        try:
+            with gzip.open(io.BytesIO(x), 'rb') as fh:
                 fh.read(1)
-            except gzip.BadGzipFile:
+        except gzip.BadGzipFile:
                 print('input_file is not a valid gzip file by BadGzipFile')
                 gzipped = False
                 # Create empty DataFrane
