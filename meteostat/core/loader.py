@@ -22,7 +22,7 @@ from kivy.logger import Logger
 import shutil
 import os
 import errno
-
+import ssl
 
 
 
@@ -90,31 +90,15 @@ def load_handler(
         # Read CSV file from Meteostat endpoint
         # endpoint = endpoint.replace('https', 'http')
         # Logger.info(f'meteostat endpoint {endpoint}')
-        url = endpoint + path
-        x = requests.get(url=url, verify=None).content
-        gzipped = True
-        file_out = 'file.txt'       
-        try:
-            with gzip.open(io.BytesIO(x), 'rb') as fh:
-                fh.read(1)
-        except gzip.BadGzipFile:
-                print('input_file is not a valid gzip file by BadGzipFile')
-                gzipped = False
-                # Create empty DataFrane
-                df = pd.DataFrame(columns=[*types])
-
-                # Display warning
-                warn(f"Cannot load {path} from {endpoint}")
-                return df
-        if gzipped:
-            with gzip.open(io.BytesIO(x), 'rb') as f_in:
-                with open(file_out, 'wb') as f_out:
-                    shutil.copyfileobj(f_in, f_out)
+        ctx = ssl.create_default_context()
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
         df = pd.read_csv(
-            file_out,
+            endpoint + path,
             names=columns,
             dtype=types,
             parse_dates=parse_dates,
+            storage_options={'context': ctx}
         )
 
         # Force datetime conversion
