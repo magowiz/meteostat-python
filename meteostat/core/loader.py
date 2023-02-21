@@ -23,6 +23,7 @@ import shutil
 import os
 import errno
 import ssl
+import certifi
 
 
 
@@ -90,15 +91,15 @@ def load_handler(
         # Read CSV file from Meteostat endpoint
         # endpoint = endpoint.replace('https', 'http')
         # Logger.info(f'meteostat endpoint {endpoint}')
-        ctx = ssl.create_default_context()
-        ctx.check_hostname = False
-        ctx.verify_mode = ssl.CERT_NONE
+        # ctx = ssl.create_default_context()
+        # ctx.check_hostname = False
+        # ctx.verify_mode = ssl.CERT_NONE
+        os.environ['SSL_CERT_FILE'] = certifi.where()
         df = pd.read_csv(
             endpoint + path,
             names=columns,
             dtype=types,
-            parse_dates=parse_dates,
-            storage_options={'context': ctx}
+            parse_dates=parse_dates
         )
 
         # Force datetime conversion
