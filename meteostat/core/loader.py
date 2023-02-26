@@ -95,11 +95,13 @@ def load_handler(
         # ctx.check_hostname = False
         # ctx.verify_mode = ssl.CERT_NONE
         os.environ['SSL_CERT_FILE'] = certifi.where()
+        urllib_options = {"cafile": os.environ['SSL_CERT_FILE']}
         df = pd.read_csv(
             endpoint + path,
             names=columns,
             dtype=types,
-            parse_dates=parse_dates
+            parse_dates=parse_dates,
+            storage_options=urllib_options
         )
 
         # Force datetime conversion
