@@ -86,7 +86,7 @@ def load_handler(
     """
     Load a single CSV file into a DataFrame
     """
-    print('load handler new')
+    Logger.info('load handler new')
     try:
         # Read CSV file from Meteostat endpoint
         # endpoint = endpoint.replace('https', 'http')
