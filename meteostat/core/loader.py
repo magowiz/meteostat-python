@@ -7,24 +7,15 @@ under the terms of the Creative Commons Attribution-NonCommercial
 
 The code is licensed under the MIT license.
 """
-
 from urllib.error import HTTPError
 from multiprocessing import Pool
 from multiprocessing.pool import ThreadPool
 from typing import Callable, Union
 import pandas as pd
 from meteostat.core.warn import warn
-import io
 import requests
 import gzip
-from io import StringIO
-from kivy.logger import Logger
-import shutil
-import os
-import errno
 import ssl
-import certifi
-
 
 
 def processing_handler(
@@ -86,22 +77,27 @@ def load_handler(
     """
     Load a single CSV file into a DataFrame
     """
-    Logger.info('load handler new')
     try:
         # Read CSV file from Meteostat endpoint
         # endpoint = endpoint.replace('https', 'http')
         # Logger.info(f'meteostat endpoint {endpoint}')
-        # ctx = ssl.create_default_context()
-        # ctx.check_hostname = False
-        # ctx.verify_mode = ssl.CERT_NONE
-        os.environ['SSL_CERT_FILE'] = certifi.where()
-        urllib_options = {"cafile": os.environ['SSL_CERT_FILE']}
+        ctx = ssl.create_default_context()
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
+        response = requests.get(endpoint + path)
+        response_file = 'response.gz'
+        with open('response.gz', 'wb') as gzipfile:
+            gzipfile.write(response.content)
+        try:
+            gzip.open('response.gz', 'rb')
+            print('gzip file')
+        except gzip.BadGzipFile:
+            print('not gzip file')
         df = pd.read_csv(
-            endpoint + path,
+            response_file,
             names=columns,
             dtype=types,
-            parse_dates=parse_dates,
-            storage_options=urllib_options
+            parse_dates=parse_dates
         )
 
         # Force datetime conversion

@@ -17,7 +17,6 @@ from meteostat.enumerations.granularity import Granularity
 from meteostat.core.warn import warn
 from meteostat.interface.meteodata import MeteoData
 from meteostat.interface.point import Point
-from kivy.logger import Logger
 
 
 class Normals(MeteoData):
@@ -80,7 +79,6 @@ class Normals(MeteoData):
         start: int = None,
         end: int = None,
     ) -> None:
-        Logger.info('normals init')
         # Set list of weather stations
         if isinstance(loc, pd.DataFrame):
             self._stations = loc.index
@@ -121,7 +119,6 @@ class Normals(MeteoData):
         # Clear cache
         if self.max_age > 0 and self.autoclean:
             self.clear_cache()
-        Logger.info('normals end init')
 
     def normalize(self):
         """
