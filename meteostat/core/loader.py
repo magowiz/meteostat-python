@@ -15,7 +15,6 @@ import pandas as pd
 from meteostat.core.warn import warn
 import requests
 import gzip
-import ssl
 
 
 def processing_handler(
@@ -78,12 +77,6 @@ def load_handler(
     Load a single CSV file into a DataFrame
     """
     try:
-        # Read CSV file from Meteostat endpoint
-        # endpoint = endpoint.replace('https', 'http')
-        # Logger.info(f'meteostat endpoint {endpoint}')
-        # ctx = ssl.create_default_context()
-        # ctx.check_hostname = False
-        # ctx.verify_mode = ssl.CERT_NONE
         response = requests.get(endpoint + path)
         response_file = 'response.gz'
         with open('response.gz', 'wb') as gzipfile:
