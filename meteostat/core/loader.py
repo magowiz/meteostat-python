@@ -81,9 +81,9 @@ def load_handler(
         # Read CSV file from Meteostat endpoint
         # endpoint = endpoint.replace('https', 'http')
         # Logger.info(f'meteostat endpoint {endpoint}')
-        ctx = ssl.create_default_context()
-        ctx.check_hostname = False
-        ctx.verify_mode = ssl.CERT_NONE
+        # ctx = ssl.create_default_context()
+        # ctx.check_hostname = False
+        # ctx.verify_mode = ssl.CERT_NONE
         response = requests.get(endpoint + path)
         response_file = 'response.gz'
         with open('response.gz', 'wb') as gzipfile:
@@ -93,6 +93,7 @@ def load_handler(
             print('gzip file')
         except gzip.BadGzipFile:
             print('not gzip file')
+            raise FileNotFoundError
         df = pd.read_csv(
             response_file,
             names=columns,
