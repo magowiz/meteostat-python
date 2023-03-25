@@ -25,7 +25,7 @@ logger.setLevel(logging.DEBUG)
 
 # Inizializzazione del gestore di log per la visualizzazione dei messaggi a schermo
 console_handler = logging.StreamHandler()
-console_handler.setLevel(logging.DEBUG)
+# console_handler.setLevel(logging.DEBUG)
 
 # Aggiunta del gestore di log al logger
 logger.addHandler(console_handler)
