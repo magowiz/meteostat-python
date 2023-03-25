@@ -78,8 +78,11 @@ def load_handler(
     Load a single CSV file into a DataFrame
     """
     try:
-        response = requests.get(endpoint + path)
         print(f'url {endpoint + path}')
+        response = requests.get(endpoint + path)
+        if response.status_code == 404:
+            print('file not found')
+            raise FileNotFoundError
         response_file = 'response.gz'
         with open('response.gz', 'wb') as gzipfile:
             gzipfile.write(response.content)
