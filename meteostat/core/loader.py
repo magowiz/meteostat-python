@@ -79,7 +79,7 @@ def load_handler(
     """
     try:
         print(f'url {endpoint + path}')
-        response = requests.get(endpoint + path)
+        response = requests.get(endpoint + path, timeout=30)
         if response.status_code == 404:
             print('file not found')
             raise FileNotFoundError
