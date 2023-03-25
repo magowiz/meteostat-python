@@ -15,7 +15,7 @@ import pandas as pd
 from meteostat.core.warn import warn
 import requests
 import gzip
-import logging
+
 
 import logging
 
