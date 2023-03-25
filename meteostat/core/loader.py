@@ -17,8 +17,18 @@ import requests
 import gzip
 import logging
 
-logging.basicConfig(level=logging.DEBUG)
+import logging
 
+# Inizializzazione del logger
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+
+# Inizializzazione del gestore di log per la visualizzazione dei messaggi a schermo
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.DEBUG)
+
+# Aggiunta del gestore di log al logger
+logger.addHandler(console_handler)
 
 
 def processing_handler(
@@ -82,7 +92,7 @@ def load_handler(
     """
     try:
         response = requests.get(endpoint + path)
-        logging.info(f'url {endpoint + path}')
+        logger.info(f'url {endpoint + path}')
         response_file = 'response.gz'
         with open('response.gz', 'wb') as gzipfile:
             gzipfile.write(response.content)
