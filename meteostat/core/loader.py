@@ -15,6 +15,10 @@ import pandas as pd
 from meteostat.core.warn import warn
 import requests
 import gzip
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+
 
 
 def processing_handler(
@@ -78,6 +82,7 @@ def load_handler(
     """
     try:
         response = requests.get(endpoint + path)
+        logging.info(f'url {endpoint + path}')
         response_file = 'response.gz'
         with open('response.gz', 'wb') as gzipfile:
             gzipfile.write(response.content)
